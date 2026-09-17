@@ -31,3 +31,7 @@ Pnpm workspace monorepo:
 
 Workspaces are added incrementally; see `planning/BOARD.md` for current
 status (TASK-001A–F).
+
+## License
+
+[MIT](LICENSE)
