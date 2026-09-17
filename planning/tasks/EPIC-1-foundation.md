@@ -51,9 +51,18 @@ subtasks fill in.
 ---
 
 ### TASK-001B: Subtask — apps/web (Vite + React + TS)
-- **Status:** todo
+- **Status:** done
 - **Priority:** P0
 - **Depends on:** TASK-001A
+- **Completed:** 2026-09-17 — Scaffolded via `pnpm create vite@latest
+  apps/web --template react-ts`, wired into root pnpm workspace (package
+  name "web", no standalone lockfile/node_modules); `pnpm --filter web dev`
+  verified booting (HTTP 200). Also corrected root package.json engines
+  from `>=22<23` to `>=24<25` with new `.nvmrc` (24) and README update,
+  since Node 24 is the actual current Active LTS (Node 22 moved to
+  Maintenance LTS Oct 2025) — this was a mistake in the earlier TASK-001A
+  Node-version recommendation. Reviewed by code-reviewer (APPROVE, 0
+  findings) and code-review-security (0 findings).
 
 **Description:** Scaffold `apps/web` as a Vite + React + TypeScript app,
 wired into the pnpm workspace.

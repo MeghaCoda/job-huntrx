@@ -6,7 +6,7 @@ from legally-scrapable sources. See [`CLAUDE.md`](CLAUDE.md) for full scope
 and [`planning/EPIC.md`](planning/EPIC.md) for the build plan.
 
 ## Prerequisites
-- Node.js 22 (LTS)
+- Node.js 24 (LTS) — see `.nvmrc`
 - pnpm, via [Corepack](https://nodejs.org/api/corepack.html) (ships with
   Node — run `corepack enable` once, then pnpm resolves automatically from
   the `packageManager` field in `package.json`)
