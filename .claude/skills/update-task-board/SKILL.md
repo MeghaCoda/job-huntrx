@@ -34,6 +34,11 @@ rewrites).
      `- **Blocked reason:** <reason>` — always required for `blocked`.
    - Marking **in-progress** or back to **todo** → no extra field, just the
      status line.
+   - Marking **in-progress**: before writing any code for the task, use
+     Claude Code's Plan Mode (`EnterPlanMode`) to present the implementation
+     plan and get explicit approval, then exit plan mode
+     (`ExitPlanMode`) to proceed. Apply the status edit either just before
+     entering plan mode or right after approval — not a substitute for it.
 5. **Update "Next up" in `BOARD.md`** only if the change makes it stale
    (e.g. the task just marked `done` was the one it pointed at). Set it to
    the next unblocked `todo` task in dependency order. Leave it alone

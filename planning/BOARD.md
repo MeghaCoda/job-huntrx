@@ -10,8 +10,8 @@ detail, acceptance criteria, and dependencies live in `tasks/EPIC-*.md`.
 | TASK-001 | Initialize repo & workspace layout (see subtasks below) | todo | P0 | — |
 | TASK-001A | Subtask: Root init & workspace config | done | P0 | — |
 | TASK-001B | Subtask: apps/web (Vite + React + TS) | done | P0 | TASK-001A |
-| TASK-001C | Subtask: apps/api (Next.js) | todo | P0 | TASK-001A |
-| TASK-001D | Subtask: packages/db | todo | P0 | TASK-001A |
+| TASK-001C | Subtask: apps/api (Next.js) | done | P0 | TASK-001A |
+| TASK-001D | Subtask: packages/db | done | P0 | TASK-001A |
 | TASK-001E | Subtask: packages/agent (LangGraph) | todo | P0 | TASK-001A |
 | TASK-001F | Subtask: packages/rag (Chroma client) | todo | P0 | TASK-001A |
 | TASK-002 | Postgres via docker-compose | todo | P0 | TASK-001 |
@@ -87,7 +87,7 @@ until its diff has been reviewed by the
 skill, and any findings are resolved or explicitly accepted.
 
 ## Next up
-Start here: **TASK-001C** (TASK-001A and TASK-001B are done; TASK-001D/E/F
-are also unblocked and can be done in any order). Before EPIC-4 work begins in earnest, get EPIC-3
-(source compliance) far enough along to have at least one approved source
-for TASK-032.
+Start here: **TASK-001E or TASK-001F** (TASK-001A/B/C/D are done; E/F both
+depend only on TASK-001A and can be done in any order). Before EPIC-4 work
+begins in earnest, get EPIC-3 (source compliance) far enough along to have
+at least one approved source for TASK-032.

@@ -75,9 +75,18 @@ wired into the pnpm workspace.
 ---
 
 ### TASK-001C: Subtask — apps/api (Next.js)
-- **Status:** todo
+- **Status:** done
 - **Priority:** P0
 - **Depends on:** TASK-001A
+- **Completed:** 2026-09-21 — Scaffolded via `pnpm create next-app@latest
+  apps/api --api` (headless App Router, TypeScript, ESLint, no Tailwind,
+  `--skip-install --disable-git`), wired into the pnpm workspace as package
+  "api"/"0.0.0"; added `eslint.config.mjs` + `lint` script (Next 16 removed
+  `next lint`), bumped `@types/node` to match apps/web's convention; folded
+  the scaffold's nested `pnpm-workspace.yaml` (`allowBuilds`) into the root
+  one. `pnpm --filter api dev`/`build`/`lint` all verified. Reviewed by
+  code-reviewer (APPROVE, 1 low note fixed) and code-review-security (1
+  finding fixed, 1 deferred to TASK-006).
 
 **Description:** Scaffold `apps/api` as a Next.js (TypeScript) app, wired
 into the pnpm workspace.
@@ -89,9 +98,24 @@ into the pnpm workspace.
 ---
 
 ### TASK-001D: Subtask — packages/db
-- **Status:** todo
+- **Status:** done
 - **Priority:** P0
 - **Depends on:** TASK-001A
+- **Completed:** 2026-09-21 — Scaffolded `packages/db` as an installable
+  pnpm workspace package named `@job-huntrx/db`: `package.json` (type
+  module, `main`/`types` pointing at `dist/`, `build` via `tsc`,
+  `typecheck` script, single `typescript` devDependency), `tsconfig.json`
+  (ES2022/NodeNext, strict, declaration emit to `dist/`, `rootDir` `src`),
+  and `src/index.ts` placeholder (`export {}`). Added
+  `"@job-huntrx/db": "workspace:*"` to `apps/api/package.json`
+  dependencies (no usage added inside `apps/api` source yet — that's
+  TASK-003/TASK-006 work). Verified `pnpm install` links the workspace
+  package, `pnpm --filter @job-huntrx/db build`/`typecheck` both pass, a
+  scratch import check confirmed it resolves from `apps/api` (then
+  discarded), and `pnpm --filter api dev` still boots. Reviewed by
+  code-reviewer (APPROVE, 2 low non-blocking notes for TASK-003: no
+  `exports` field yet; NodeNext will need explicit `.js` extensions on
+  relative imports once added) and code-review-security (no findings).
 
 **Description:** Scaffold `packages/db` as an installable workspace package
 (empty shell for now — schema/migrations/client land in TASK-003).
