@@ -47,6 +47,37 @@ If you change `POSTGRES_*` in `.env`, update `DATABASE_URL` to match.
 Credentials only apply when the volume is first created; after changing
 them, run `docker compose down -v` to re-initialize.
 
+## Database schema & migrations
+
+`packages/db` uses [Prisma](https://www.prisma.io/) 7. The schema lives in
+`packages/db/prisma/schema.prisma`, and migrations (plain SQL, committed) live in
+`packages/db/prisma/migrations/`. Prisma reads `DATABASE_URL` from the root
+`.env`.
+
+```sh
+pnpm db:migrate                          # apply pending migrations (safe: never writes or resets)
+pnpm db:migrate:status                   # which migrations are applied / pending
+pnpm db:migrate:dev --name <change>      # after editing schema.prisma: write + apply a new migration
+pnpm db:generate                         # regenerate the typed client (build does this too)
+pnpm --filter @job-huntrx/db db:studio   # browse data in a local web UI
+pnpm --filter @job-huntrx/db db:smoke    # end-to-end client check (writes nothing)
+```
+
+`db:migrate:dev` is for development only. If the database has drifted from the
+migration history, it offers to **reset** the database, which deletes all data.
+Anywhere else (CI, deploys) use `db:migrate`.
+
+The typed client in `src/generated/` is gitignored and rebuilt from the schema.
+Use it from server code only:
+
+```ts
+import { getPrisma } from "@job-huntrx/db";
+const users = await getPrisma().user.findMany();
+```
+
+Never import `@job-huntrx/db` from `apps/web`: it would bundle the Postgres
+driver and connection details into the browser build.
+
 ## Layout
 
 Pnpm workspace monorepo:

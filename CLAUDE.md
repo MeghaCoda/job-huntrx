@@ -17,6 +17,15 @@ Task tracking lives in `planning/BOARD.md` (index) and `planning/tasks/EPIC-*.md
 via the `code-reviewer` agent and `code-review-security` skill is required before
 any task is marked done (see "Definition of done" in `planning/BOARD.md`).
 
+**LOW-severity security findings:** if a LOW security finding isn't resolved
+within the task, defer it rather than blocking. Don't fix it unasked. Record
+it in that task's completion note in its `planning/tasks/EPIC-*.md` entry as
+deferred. The user periodically makes dedicated passes over already-built
+parts of the app to address deferred LOW items. Escalate one sooner only if it
+has become urgent, e.g. it's now reachable or exploitable, or a later task
+raises its severity. MEDIUM and above still get resolved or explicitly
+accepted by the user per the Definition of done.
+
 ## Prisma (ORM) — explain in detail
 
 The project uses Prisma as its ORM/migration tool (decided 2026-09-23). I do

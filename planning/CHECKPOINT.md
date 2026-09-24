@@ -8,30 +8,29 @@ before doing anything else (see CLAUDE.md).
 **Last updated:** 2026-09-23
 
 ## Last finished
-**TASK-002 — Postgres via docker-compose.** Root `docker-compose.yml`
-(postgres:18-alpine, bound to 127.0.0.1 only, `pgdata` volume,
-healthcheck), root `.env.example` with `DATABASE_URL`, README "Local
-database" section. Verified live: healthy, reachable from host, data
-persists across down/up. Passed `/review-all` (code-reviewer APPROVE;
-5 LOW total — 1 fixed, rest accepted/deferred, see TASK-002 completion
-note in EPIC-1). Nothing committed — the user commits their own changes
-(docker-compose.yml, .env.example, README.md, CLAUDE.md, planning docs).
+**TASK-003 — ORM & migrations setup (Prisma 7.10.0).** `packages/db` now
+has `prisma/schema.prisma` (`User` → `users`), first migration
+`20260924024458_init_users`, `prisma.config.ts`, a typed client
+(`getPrisma()` / `createPrismaClient()`), `db:*` scripts (`pnpm db:migrate`
+= safe `migrate deploy`), README section. `DATABASE_URL` appended to the
+user's `.env`. Passed `/review-all`; the MEDIUM (`updated_at` DB default)
+was fixed by amending the unshipped first migration (local DB reset with
+user consent). 3 LOW deferred — listed in the TASK-003 completion note.
+Nothing committed — the user commits their own changes.
 
-Also decided: **ORM = Prisma** (recorded in `planning/EPIC.md`). `CLAUDE.md`
-now has a note that the user doesn't know Prisma — explain all Prisma work
-in extra detail.
+Also: `CLAUDE.md` now says unresolved LOW security findings get deferred
+(recorded in the task's completion note), not fixed unasked.
 
 ## In progress
 Nothing in progress — session ended cleanly between tasks. The Postgres
 container was left running (`docker compose down` to stop; data is kept).
 
 ## Next up
-Start here: **TASK-003** (ORM & migrations) — per `planning/BOARD.md`.
-Ready to start with **Prisma**. When it starts, add `DATABASE_URL` from
-`.env.example` to the user's `.env` (append only — don't touch the
-existing API key). TASK-004 (env & secrets), TASK-005 (CI skeleton),
-and TASK-060 (unit test setup) are unblocked and can run in parallel.
-EPIC-4 (TASK-030, TASK-032) follows once TASK-003 lands.
+Start here: **TASK-004** (env & secrets), then **TASK-006** (base app
+shell) — per `planning/BOARD.md`. TASK-004 goes first because Next.js
+only loads `apps/api/.env`, not the root `.env` holding `DATABASE_URL`.
+TASK-010 and TASK-030 are also unblocked; TASK-005 and TASK-060 can run
+in parallel.
 
 Other planning-support skills still to build (see `planning/SKILLS.md`):
 `scraper-compliance-check`, `add-job-source`, `db-migration`,
@@ -51,5 +50,9 @@ Other planning-support skills still to build (see `planning/SKILLS.md`):
   optional native `chromadb-js-bindings-*` deps (accepted LOW from the
   TASK-001F security review).
 - Deferred from TASK-002 review: the app currently connects as the Postgres
-  superuser — create separate migration/app roles (TASK-003/TASK-063); pin
-  the postgres image by digest once CI/deploy reuse it (TASK-005/TASK-063).
+  superuser — create separate migration/app roles (TASK-063); pin the
+  postgres image by digest once CI/deploy reuse it (TASK-005/TASK-063).
+- Tooling: the shell's default `node` is Homebrew v21 (too old for
+  `engines: >=24`) — prefix PATH with `~/.nvm/versions/node/v24.18.0/bin`.
+  Prisma blocks `migrate reset` by AI agents without explicit user consent
+  (`PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION`) — always ask first.

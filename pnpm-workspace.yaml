@@ -5,3 +5,7 @@ packages:
 allowBuilds:
   sharp: false
   unrs-resolver: false
+  esbuild: false
+  # Prisma downloads its schema (migration) engine in a postinstall script.
+  "@prisma/engines": true
+  prisma: true

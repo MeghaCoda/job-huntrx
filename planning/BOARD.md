@@ -15,7 +15,7 @@ detail, acceptance criteria, and dependencies live in `tasks/EPIC-*.md`.
 | TASK-001E | Subtask: packages/agent (LangGraph) | done | P0 | TASK-001A |
 | TASK-001F | Subtask: packages/rag (Chroma client) | done | P0 | TASK-001A |
 | TASK-002 | Postgres via docker-compose | done | P0 | TASK-001 |
-| TASK-003 | ORM & migrations setup | todo | P0 | TASK-002 |
+| TASK-003 | ORM & migrations setup | done | P0 | TASK-002 |
 | TASK-004 | Environment & secrets handling | todo | P1 | TASK-001 |
 | TASK-005 | CI pipeline skeleton | todo | P1 | TASK-001 |
 | TASK-006 | Base app shell | todo | P0 | TASK-001, TASK-003 |
@@ -88,12 +88,15 @@ until its diff has been reviewed by the
 skill, and any findings are resolved or explicitly accepted.
 
 ## Next up
-Start here: **TASK-003** (ORM & migrations — P0, critical path; unblocks
-TASK-006, TASK-010, and TASK-030). ORM decided: **Prisma** (see
-`planning/EPIC.md` open decisions) — TASK-003 is ready to start.
-TASK-002 is done (local Postgres via docker-compose). TASK-004 (env &
-secrets), TASK-005 (CI skeleton), and TASK-060 (unit test setup) are also
-unblocked and can run in parallel.
+Start here: **TASK-004** (env & secrets — P1, but do it first), then
+**TASK-006** (base app shell — P0). Reason for the order: Next.js loads
+`.env` only from `apps/api/`, not the repo-root `.env` that holds
+`DATABASE_URL`, so TASK-006 would need a workaround for DB access until
+TASK-004's per-app env handling lands. TASK-003 is done (Prisma in
+`packages/db`, first `users` migration), which also unblocks the other P0s
+**TASK-010** (users/profile schema) and **TASK-030** (jobs schema).
+TASK-005 (CI skeleton) and TASK-060 (unit test setup) remain unblocked and
+can run in parallel.
 
 **2026-09-23 update:** EPIC-3 is now effectively cleared for MVP — Remote
 Rocketship is an approved source (`planning/compliance/remote-rocketship.md`),

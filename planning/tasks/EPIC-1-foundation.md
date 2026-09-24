@@ -199,7 +199,8 @@ volume, and a `.env.example` with `DATABASE_URL`.
 ---
 
 ### TASK-003: ORM & migrations setup
-- **Status:** todo
+- **Status:** done
+- **Completed:** 2026-09-23 — Prisma 7.10.0 (exact-pinned) in `packages/db`: `prisma/schema.prisma` (`User` → `users`: uuid id `gen_random_uuid()`, unique email, timestamptz `created_at`/`updated_at` both DB-defaulted), first migration `20260924024458_init_users`, `prisma.config.ts` (loads root `.env`; plain `process.env.DATABASE_URL` so `generate`/`build` work without a DB), `src/client.ts` (`createPrismaClient` via `@prisma/adapter-pg` + lazy `globalThis` singleton `getPrisma`), `db:migrate` (= `migrate deploy`), `db:migrate:dev`/`:status`/`db:studio`/`db:smoke` scripts (+ root proxies), generated client gitignored, README section. Verified migrate/idempotent deploy/raw-SQL insert/smoke/build and a live `apps/api` query. Passed `/review-all`: code-reviewer APPROVE (MEDIUM `updated_at` missing DB default → fixed by amending the unshipped first migration; LOW CI-without-`.env` generate → verified in isolated copy). **Deferred LOW (security):** case-sensitive `email` uniqueness (address in TASK-010: lowercase/citext); `db:smoke` has no local-only host guard; no TLS enforcement on the pg connection (TASK-063, alongside the already-deferred superuser → separate app/migration roles).
 - **Priority:** P0
 - **Depends on:** TASK-002
 

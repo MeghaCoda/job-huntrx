@@ -5,5 +5,11 @@
   "engines": {
     "node": ">=24 <25"
   },
-  "packageManager": "pnpm@12.4.2"
+  "packageManager": "pnpm@12.4.2",
+  "scripts": {
+    "db:generate": "pnpm --filter @job-huntrx/db generate",
+    "db:migrate": "pnpm --filter @job-huntrx/db db:migrate",
+    "db:migrate:dev": "pnpm --filter @job-huntrx/db db:migrate:dev",
+    "db:migrate:status": "pnpm --filter @job-huntrx/db db:migrate:status"
+  }
 }

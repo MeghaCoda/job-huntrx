@@ -23,3 +23,6 @@ pnpm-debug.log*
 .DS_Store
 .vscode/*
 !.vscode/extensions.json
+
+# Prisma client (generated from packages/db/prisma/schema.prisma by `prisma generate`)
+packages/db/src/generated/
