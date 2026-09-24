@@ -69,3 +69,29 @@ alerting when a scheduled adapter run fails or the retention job errors.
 
 **Acceptance criteria:**
 - A forced adapter failure produces a visible alert/log entry, not silence.
+
+---
+
+### TASK-065: Debug mode with LangSmith tracing (off by default)
+- **Status:** todo
+- **Priority:** P1
+- **Depends on:** TASK-004, TASK-042
+
+**Description:** LangSmith tracing (pulled in transitively via
+`@langchain/core`) uploads every agent step's full inputs and outputs —
+including resume/LinkedIn PII — to a third-party service when
+`LANGSMITH_TRACING` (or legacy `LANGCHAIN_TRACING_V2`) is set. Decided
+2026-09-23: tracing stays off unless the app is explicitly started in debug
+mode. Add a single debug-mode switch that is the only way to enable
+tracing, and guard against tracing being turned on any other way (e.g. a
+stray env var in the hosting dashboard or a copied `.env`). Raised as a
+LOW finding in the TASK-001E security review.
+
+**Acceptance criteria:**
+- `.env.example` sets `LANGSMITH_TRACING=false` and documents debug mode.
+- A single explicit debug-mode setting enables tracing; without it,
+  tracing is off regardless of other LangSmith/LangChain env vars.
+- If tracing env vars are set while debug mode is off, the agent/API
+  process fails fast (or forces tracing off) at boot with a clear message.
+- Debug mode is visibly indicated when active (startup log line at
+  minimum) so it isn't left on unnoticed in a deployment.

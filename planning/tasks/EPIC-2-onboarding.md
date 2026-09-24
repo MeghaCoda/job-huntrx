@@ -26,11 +26,14 @@ or unique constraint on rank 1-10).
 - **Priority:** P0
 - **Depends on:** TASK-010
 
-**Description:** Pick a provider (NextAuth, Clerk, or custom email/password +
-sessions) and wire sign-up/login/logout, protecting API routes.
+**Description (rescoped 2026-09-23 — single-user app, no multi-tenant use
+case):** No public sign-up flow needed. Add a single-user access gate — one
+configured credential/session (e.g. a single email+password or passphrase
+checked against an env-configured value) protecting the app, rather than a
+full multi-user account system.
 
 **Acceptance criteria:**
-- A new user can sign up and land on an authenticated onboarding page.
+- The app is inaccessible without the single configured credential.
 - Unauthenticated requests to profile/job APIs are rejected.
 
 ---

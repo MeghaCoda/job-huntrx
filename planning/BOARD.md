@@ -7,13 +7,13 @@ detail, acceptance criteria, and dependencies live in `tasks/EPIC-*.md`.
 ## Phase 1 — [EPIC-1: Foundation](tasks/EPIC-1-foundation.md)
 | ID | Title | Status | Priority | Depends on |
 |---|---|---|---|---|
-| TASK-001 | Initialize repo & workspace layout (see subtasks below) | todo | P0 | — |
+| TASK-001 | Initialize repo & workspace layout (see subtasks below) | done | P0 | — |
 | TASK-001A | Subtask: Root init & workspace config | done | P0 | — |
 | TASK-001B | Subtask: apps/web (Vite + React + TS) | done | P0 | TASK-001A |
 | TASK-001C | Subtask: apps/api (Next.js) | done | P0 | TASK-001A |
 | TASK-001D | Subtask: packages/db | done | P0 | TASK-001A |
-| TASK-001E | Subtask: packages/agent (LangGraph) | todo | P0 | TASK-001A |
-| TASK-001F | Subtask: packages/rag (Chroma client) | todo | P0 | TASK-001A |
+| TASK-001E | Subtask: packages/agent (LangGraph) | done | P0 | TASK-001A |
+| TASK-001F | Subtask: packages/rag (Chroma client) | done | P0 | TASK-001A |
 | TASK-002 | Postgres via docker-compose | todo | P0 | TASK-001 |
 | TASK-003 | ORM & migrations setup | todo | P0 | TASK-002 |
 | TASK-004 | Environment & secrets handling | todo | P1 | TASK-001 |
@@ -35,10 +35,10 @@ detail, acceptance criteria, and dependencies live in `tasks/EPIC-*.md`.
 ## Phase 3 — [EPIC-3: Source Research & Compliance](tasks/EPIC-3-source-research.md)
 | ID | Title | Status | Priority | Depends on |
 |---|---|---|---|---|
-| TASK-020 | Audit ATS public job APIs | todo | P0 | — |
-| TASK-021 | Audit job-board aggregator APIs | todo | P0 | — |
-| TASK-022 | Explicit exclusion list | todo | P0 | — |
-| TASK-023 | Compliance card template | todo | P1 | — |
+| TASK-020 | Audit ATS public job APIs | todo | P2 | — |
+| TASK-021 | Audit job-board aggregator APIs | todo | P2 | — |
+| TASK-022 | Explicit exclusion list | done | P0 | — |
+| TASK-023 | Compliance card template | done | P1 | — |
 
 ## Phase 4 — [EPIC-4: Aggregation Pipeline](tasks/EPIC-4-aggregation.md)
 | ID | Title | Status | Priority | Depends on |
@@ -78,6 +78,7 @@ detail, acceptance criteria, and dependencies live in `tasks/EPIC-*.md`.
 | TASK-062 | E2E test — onboarding to job feed | todo | P2 | TASK-050 |
 | TASK-063 | Deployment target setup (decision required) | todo | P1 | TASK-006 |
 | TASK-064 | Observability | todo | P2 | TASK-063 |
+| TASK-065 | Debug mode with LangSmith tracing (off by default) | todo | P1 | TASK-004, TASK-042 |
 
 ## Definition of done
 Security and QA are top priorities on this project. No task above is "done"
@@ -87,7 +88,21 @@ until its diff has been reviewed by the
 skill, and any findings are resolved or explicitly accepted.
 
 ## Next up
-Start here: **TASK-001E or TASK-001F** (TASK-001A/B/C/D are done; E/F both
-depend only on TASK-001A and can be done in any order). Before EPIC-4 work
-begins in earnest, get EPIC-3 (source compliance) far enough along to have
-at least one approved source for TASK-032.
+Start here: **TASK-002** (Postgres via docker-compose — P0, on the
+critical path to TASK-003 ORM/migrations, which needs the ORM decision).
+TASK-001 is done (all six subtasks), so TASK-004 (env & secrets), TASK-005
+(CI skeleton), and TASK-060 (unit test setup) are also unblocked and can
+run in parallel.
+
+**2026-09-23 update:** EPIC-3 is now effectively cleared for MVP — Remote
+Rocketship is an approved source (`planning/compliance/remote-rocketship.md`),
+TASK-022/023 are done, and TASK-020/021 are downgraded to P2 backlog
+(broader source audits, not launch blockers). The app's scope is also
+now single-user only (no multi-tenant use case), which simplifies
+TASK-011 (auth) to a single-user access gate and TASK-034 (scheduler,
+EPIC-4) to one daily run with no cross-user rate-limit coalescing.
+EPIC-4's retention model (TASK-030/TASK-035) changed from 30/90 days to
+48 hours after `posted_at` for ordinary jobs, and 30 days from
+applied/favorited date for a minimal snapshot of applied/favorited jobs
+only — see `planning/EPIC.md` Product summary and the EPIC-4 task file
+for detail.

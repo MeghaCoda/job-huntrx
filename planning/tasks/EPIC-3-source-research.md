@@ -9,8 +9,12 @@ forbids bots/crawlers.
 
 ### TASK-020: Audit ATS public job APIs
 - **Status:** todo
-- **Priority:** P0
+- **Priority:** P2
 - **Depends on:** —
+- **Note (2026-09-23):** Downgraded from P0 — Remote Rocketship
+  (`planning/compliance/remote-rocketship.md`, approved) is sufficient as
+  the single source for the single-user MVP. This becomes "add another
+  source later" work, not a launch blocker.
 
 **Description:** Evaluate ATS platforms that expose public, intended-for-reuse
 job feeds (e.g. Greenhouse Job Board API, Lever Postings API, Ashby, Workable,
@@ -25,8 +29,12 @@ external listing, but confirm current ToS per platform before use.
 
 ### TASK-021: Audit job-board aggregator APIs
 - **Status:** todo
-- **Priority:** P0
+- **Priority:** P2
 - **Depends on:** —
+- **Note (2026-09-23):** Downgraded from P0 — same reasoning as TASK-020.
+  Remote Rocketship already covers this category (aggregator API with a
+  paid key) and is approved; further aggregator audits are backlog for
+  broader coverage, not required for MVP.
 
 **Description:** Evaluate sources with official public APIs meant for
 programmatic access (e.g. USAJobs, Adzuna, Jooble, RemoteOK, government/state
@@ -40,9 +48,12 @@ some cap usage).
 ---
 
 ### TASK-022: Explicit exclusion list
-- **Status:** todo
+- **Status:** done
 - **Priority:** P0
 - **Depends on:** —
+- **Completed:** 2026-09-23 — `planning/compliance/excluded.md` exists and
+  lists LinkedIn, Indeed, Glassdoor, and ZipRecruiter with reasons and
+  revisit conditions.
 
 **Description:** Document sites we will never scrape and why (LinkedIn,
 Indeed, Glassdoor, ZipRecruiter unless a licensed API is obtained later).
@@ -56,9 +67,12 @@ reintroduce a banned source.
 ---
 
 ### TASK-023: Compliance card template
-- **Status:** todo
+- **Status:** done
 - **Priority:** P1
 - **Depends on:** —
+- **Completed:** 2026-09-23 — `planning/compliance/_template.md` exists;
+  `planning/compliance/remote-rocketship.md` is the first card built from
+  it (approved, with one open residual-risk note on cache retention).
 
 **Description:** Standard template capturing: source name, ToS URL + excerpt,
 robots.txt status, auth method, rate limits, fields available, decision

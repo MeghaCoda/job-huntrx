@@ -18,9 +18,22 @@ approved compliance card (EPIC-3).
 plus a per-user join table `user_jobs` (`applied_at`, `saved`, `dismissed`,
 `match_score`). Unique constraint on `(source, external_id)`.
 
+**Note (2026-09-23 — supersedes the retention numbers above):** single-user
+app, revised retention per user decision:
+- `expires_at` on `jobs` defaults to `posted_at + 48 hours`, not
+  `inserted_at + 30 days`.
+- `user_jobs` needs a minimal applied/favorited snapshot — company name,
+  job title, application url, applied/favorited date — that is stored on
+  (or alongside) `user_jobs` and persists independently of the parent
+  `jobs` row once it expires. This snapshot expires 30 days after the
+  applied/favorited date, not 90, and never includes the full job
+  description/content.
+
 **Acceptance criteria:**
 - Migration applies cleanly.
-- `expires_at` defaults to `inserted_at + 30 days`.
+- `expires_at` on `jobs` defaults to `posted_at + 48 hours`.
+- Marking a job applied/favorited persists the minimal snapshot
+  independently of the parent `jobs` row's expiry.
 
 ---
 
@@ -43,12 +56,16 @@ NormalizedJob[]`) so each source plugs in without touching pipeline code.
 - **Priority:** P0
 - **Depends on:** TASK-031, EPIC-3 approval for the chosen source
 
-**Description:** Implement one real adapter (e.g. Greenhouse) fully: fetch,
+**Description:** Implement one real adapter — Remote Rocketship
+(`planning/compliance/remote-rocketship.md`, approved) — fully: fetch,
 normalize, insert into `jobs`.
 
 **Acceptance criteria:**
-- Running the adapter against a real company's Greenhouse board inserts
-  correctly-shaped rows.
+- Running the adapter against Remote Rocketship's `/api/openclaw/jobs`
+  endpoint inserts correctly-shaped rows.
+- The stored `url` is verified to resolve to the actual external
+  application destination (e.g. the employer's or LinkedIn's own posting),
+  not a Remote Rocketship-branded redirect page.
 
 ---
 
@@ -59,7 +76,9 @@ normalize, insert into `jobs`.
 
 **Description:** Dedupe on `(source, external_id)` for exact re-fetch, plus a
 fuzzy cross-source pass (normalized title + company + location) so the same
-posting from two sources doesn't show twice to the user.
+posting from two sources doesn't show twice to the user. Still needed even
+with a single source: overlapping job-title searches against Remote
+Rocketship can return the same posting more than once.
 
 **Acceptance criteria:**
 - Re-running an adapter against unchanged upstream data doesn't create
@@ -75,8 +94,10 @@ posting from two sources doesn't show twice to the user.
 - **Depends on:** TASK-032
 
 **Description:** A scheduled job (worker process + cron, or platform
-scheduler) that runs every adapter once daily per active job title/source
-combination.
+scheduler) that runs every adapter once daily per active job title.
+Single-user app — this means once daily against one account's up to 10 job
+titles, comfortably inside Remote Rocketship's 500 req/day cap. No
+cross-user rate-limit coalescing is needed.
 
 **Acceptance criteria:**
 - A scheduled run visibly updates `jobs` without manual triggering.
@@ -89,13 +110,17 @@ combination.
 - **Priority:** P0
 - **Depends on:** TASK-030
 
-**Description:** Nightly job deleting rows past `expires_at`; on
-"mark applied" (TASK-052), extend that user's row to `applied_at + 90 days`
-instead of the default 30.
+**Description:** Nightly job deleting `jobs` rows past `expires_at`
+(`posted_at + 48 hours`). On "mark applied" or "favorited" (TASK-052),
+persist the minimal snapshot (company, title, application url, date) on
+`user_jobs` independently of the parent `jobs` row, and delete that
+snapshot 30 days after the applied/favorited date.
 
 **Acceptance criteria:**
-- Job untouched for 30 days is deleted.
-- Job marked applied is retained until 90 days from apply date, then deleted.
+- A job untouched for 48 hours past `posted_at` is deleted.
+- A job marked applied/favorited has its minimal snapshot retained for 30
+  days from the applied/favorited date, then deleted — independent of
+  whether the parent `jobs` row already expired.
 
 ---
 

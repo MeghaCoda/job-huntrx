@@ -6,7 +6,10 @@ that later epics build on.
 ---
 
 ### TASK-001: Initialize repo & workspace layout
-- **Status:** todo
+- **Status:** done
+- **Completed:** 2026-09-23 — All six subtasks (TASK-001A–F) done; workspace
+  has apps/web, apps/api, packages/db, packages/agent, packages/rag and
+  installs with one `pnpm install`.
 - **Priority:** P0
 - **Depends on:** —
 - **Note:** Split into subtasks TASK-001A–TASK-001F below (decided
@@ -129,7 +132,16 @@ into the pnpm workspace.
 ---
 
 ### TASK-001E: Subtask — packages/agent (LangGraph)
-- **Status:** todo
+- **Status:** done
+- **Completed:** 2026-09-23 — Scaffolded `packages/agent` as workspace
+  package `@job-huntrx/agent` mirroring `packages/db` (same package.json
+  shape, identical tsconfig, placeholder `src/index.ts`); dependencies
+  `@langchain/langgraph` ^1.4.17 + `@langchain/core` ^1.2.12 (required
+  peer; zod peer satisfied transitively). Not wired into `apps/api` yet.
+  Verified install/build/typecheck, `StateGraph` import resolves, db/api
+  still build. Reviewed by code-reviewer (APPROVE, 0 findings) and
+  code-review-security (1 LOW: transitive `langsmith` tracing could export
+  PII if env-enabled — tracked as TASK-065, tracing off unless debug mode).
 - **Priority:** P0
 - **Depends on:** TASK-001A
 
@@ -145,7 +157,18 @@ logic lands in EPIC-5).
 ---
 
 ### TASK-001F: Subtask — packages/rag (Chroma client)
-- **Status:** todo
+- **Status:** done
+- **Completed:** 2026-09-23 — Scaffolded `packages/rag` as workspace
+  package `@job-huntrx/rag` mirroring `packages/agent` (same package.json
+  shape, identical tsconfig, placeholder `src/index.ts`); dependency
+  `chromadb` ^3.5.0 (official chroma-core package; pulls optional prebuilt
+  native `chromadb-js-bindings-*`, no install scripts). Verified
+  install/build/typecheck, `ChromaClient` import resolves, agent/db/api
+  still build. Reviewed by code-reviewer (APPROVE; 1 MEDIUM: stale
+  CHECKPOINT.md, fixed via /checkpoint) and code-review-security (3 LOW,
+  accepted: unneeded native bindings — revisit at TASK-040; transitive
+  langsmith PII risk — tracked as TASK-065; caret ranges — rely on
+  `--frozen-lockfile` in CI, TASK-005).
 - **Priority:** P0
 - **Depends on:** TASK-001A
 
