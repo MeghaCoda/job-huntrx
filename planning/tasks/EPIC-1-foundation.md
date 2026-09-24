@@ -184,7 +184,8 @@ retrieval logic lands in EPIC-5).
 ---
 
 ### TASK-002: Postgres via docker-compose
-- **Status:** todo
+- **Status:** done
+- **Completed:** 2026-09-23 — `docker-compose.yml` (postgres:18-alpine, 127.0.0.1-only port, `pgdata` volume, pg_isready healthcheck), root `.env.example` with `DATABASE_URL`, README "Local database" section; verified healthy, host-reachable, and persistent across down/up. Passed `/review-all`: code-reviewer APPROVE (2 LOW; `localhost`→`127.0.0.1` fixed, dev-default creds accepted), code-review-security 3 LOW deferred — app connects as superuser (separate app/migration roles in TASK-003/TASK-063), image tag not digest-pinned (TASK-005/TASK-063), `DATABASE_URL` duplicates `POSTGRES_*` (cross-check in TASK-004).
 - **Priority:** P0
 - **Depends on:** TASK-001
 
@@ -203,7 +204,7 @@ volume, and a `.env.example` with `DATABASE_URL`.
 - **Depends on:** TASK-002
 
 **Description:** Pick and configure a migration tool for `packages/db`
-(Prisma or Drizzle — decide once, see EPIC.md open decisions). Write the
+(decided: Prisma — see EPIC.md open decisions). Write the
 first migration: a bare `users` table.
 
 **Acceptance criteria:**

@@ -8,35 +8,39 @@ before doing anything else (see CLAUDE.md).
 **Last updated:** 2026-09-23
 
 ## Last finished
-**TASK-001F — packages/rag (Chroma client)**, which also closes out
-**TASK-001** (all six subtasks done). Scaffolded `@job-huntrx/rag`
-mirroring `packages/agent`, dependency `chromadb` ^3.5.0; build/typecheck
-verified. Passed `/review-all`: code-reviewer APPROVE (1 MEDIUM — this
-stale checkpoint, now fixed), code-review-security 3 LOW, accepted (see
-TASK-001F completion note in EPIC-1). Nothing committed yet — the user
-commits their own changes (packages/agent, packages/rag, lockfile,
-planning docs, Remote Rocketship compliance card are all uncommitted).
+**TASK-002 — Postgres via docker-compose.** Root `docker-compose.yml`
+(postgres:18-alpine, bound to 127.0.0.1 only, `pgdata` volume,
+healthcheck), root `.env.example` with `DATABASE_URL`, README "Local
+database" section. Verified live: healthy, reachable from host, data
+persists across down/up. Passed `/review-all` (code-reviewer APPROVE;
+5 LOW total — 1 fixed, rest accepted/deferred, see TASK-002 completion
+note in EPIC-1). Nothing committed — the user commits their own changes
+(docker-compose.yml, .env.example, README.md, CLAUDE.md, planning docs).
+
+Also decided: **ORM = Prisma** (recorded in `planning/EPIC.md`). `CLAUDE.md`
+now has a note that the user doesn't know Prisma — explain all Prisma work
+in extra detail.
 
 ## In progress
-Nothing in progress — session ended cleanly between tasks.
+Nothing in progress — session ended cleanly between tasks. The Postgres
+container was left running (`docker compose down` to stop; data is kept).
 
 ## Next up
-Start here: **TASK-002** (Postgres via docker-compose) — per
-`planning/BOARD.md`. It's on the critical path to TASK-003 (ORM/migrations),
-which needs the ORM decision before it can start. TASK-004 (env &
-secrets), TASK-005 (CI skeleton), and TASK-060 (unit test setup) are also
-unblocked and can run in parallel. EPIC-3 is cleared for MVP (Remote
-Rocketship approved), so EPIC-4 (TASK-030, TASK-032) follows once
-TASK-003 lands.
+Start here: **TASK-003** (ORM & migrations) — per `planning/BOARD.md`.
+Ready to start with **Prisma**. When it starts, add `DATABASE_URL` from
+`.env.example` to the user's `.env` (append only — don't touch the
+existing API key). TASK-004 (env & secrets), TASK-005 (CI skeleton),
+and TASK-060 (unit test setup) are unblocked and can run in parallel.
+EPIC-4 (TASK-030, TASK-032) follows once TASK-003 lands.
 
 Other planning-support skills still to build (see `planning/SKILLS.md`):
 `scraper-compliance-check`, `add-job-source`, `db-migration`,
 `job-match-eval`.
 
 ## Notes / open decisions
-- Decisions blocking early tasks (see `planning/EPIC.md`): ORM/migration
-  tool, auth provider mechanics (now single-user gate, but implementation
-  unpicked), upload file storage, deployment target. None decided yet.
+- Decisions still open (see `planning/EPIC.md`): auth provider mechanics
+  (single-user gate, implementation unpicked), upload file storage,
+  deployment target. ORM is decided (Prisma).
 - Open compliance item: get written confirmation from Remote Rocketship
   that a 48h personal-use cache TTL is acceptable (their ToS states a 24h
   max) — see `planning/compliance/remote-rocketship.md` notes. Treated as
@@ -46,3 +50,6 @@ Other planning-support skills still to build (see `planning/SKILLS.md`):
 - At TASK-040, if only Chroma's HTTP client is used, consider dropping the
   optional native `chromadb-js-bindings-*` deps (accepted LOW from the
   TASK-001F security review).
+- Deferred from TASK-002 review: the app currently connects as the Postgres
+  superuser — create separate migration/app roles (TASK-003/TASK-063); pin
+  the postgres image by digest once CI/deploy reuse it (TASK-005/TASK-063).

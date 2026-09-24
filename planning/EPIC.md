@@ -46,7 +46,9 @@ source until its compliance card (EPIC-3) is signed off.
 
 ## Open decisions to make early
 These block specific tasks below — see each task's file for detail.
-- ORM/migration tool for Postgres (Prisma vs Drizzle vs raw SQL) — blocks TASK-003
+- ~~ORM/migration tool for Postgres (Prisma vs Drizzle vs raw SQL) — blocks TASK-003~~
+  **Decided 2026-09-23: Prisma** (user preference — widely requested in job
+  descriptions). TASK-003 is unblocked.
 - Auth provider (NextAuth, Clerk, custom) — blocks TASK-011
 - File storage for uploaded PDFs (local disk for dev vs S3-compatible) — blocks TASK-012
 - Deployment targets (Vercel for web/API, Railway/Render/Fly for Postgres+workers) — blocks TASK-063

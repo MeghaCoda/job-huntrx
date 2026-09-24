@@ -10,6 +10,7 @@ and [`planning/EPIC.md`](planning/EPIC.md) for the build plan.
 - pnpm, via [Corepack](https://nodejs.org/api/corepack.html) (ships with
   Node — run `corepack enable` once, then pnpm resolves automatically from
   the `packageManager` field in `package.json`)
+- Docker with Compose v2+ (for the local Postgres)
 
 ## Install
 
@@ -18,6 +19,33 @@ pnpm install
 ```
 
 Installs dependencies for every workspace in one step.
+
+## Local database
+
+Postgres 18 runs via `docker-compose.yml`, bound to `127.0.0.1` only.
+
+```sh
+cp .env.example .env           # or append the Postgres vars to an existing .env
+docker compose up -d --wait    # start and wait until healthy
+docker compose down            # stop (data is kept in the `pgdata` volume)
+docker compose down -v         # stop AND delete all local data — irreversible
+```
+
+Connection string (dev defaults from `.env.example`):
+
+```
+DATABASE_URL=postgresql://jobhuntrx:jobhuntrx_dev@127.0.0.1:5432/jobhuntrx
+```
+
+Open a `psql` shell without installing Postgres locally:
+
+```sh
+docker compose exec postgres psql -U jobhuntrx jobhuntrx
+```
+
+If you change `POSTGRES_*` in `.env`, update `DATABASE_URL` to match.
+Credentials only apply when the volume is first created; after changing
+them, run `docker compose down -v` to re-initialize.
 
 ## Layout
 

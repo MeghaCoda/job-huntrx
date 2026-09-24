@@ -16,3 +16,18 @@ Task tracking lives in `planning/BOARD.md` (index) and `planning/tasks/EPIC-*.md
 (detail) — edit both only via the `update-task-board` skill. Security/QA review
 via the `code-reviewer` agent and `code-review-security` skill is required before
 any task is marked done (see "Definition of done" in `planning/BOARD.md`).
+
+## Prisma (ORM) — explain in detail
+
+The project uses Prisma as its ORM/migration tool (decided 2026-09-23). I do
+not know Prisma. Any time you do work related to Prisma — `schema.prisma`,
+migrations, `prisma generate`, the Prisma client, queries, seeding, config —
+be extra detailed in your explanations:
+- What you are writing or changing, and what each Prisma concept or command
+  involved does (don't assume I know terms like "model", "relation",
+  "migrate dev" vs "migrate deploy", or "generate").
+- How it affects the app: which tables/columns change in Postgres, which
+  code depends on it, whether it's destructive to existing data, and what I
+  need to run afterwards.
+- Show the SQL a migration produces when it's relevant, so I can connect
+  Prisma's schema to what actually happens in the database.

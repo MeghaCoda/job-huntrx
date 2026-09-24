@@ -14,7 +14,7 @@ detail, acceptance criteria, and dependencies live in `tasks/EPIC-*.md`.
 | TASK-001D | Subtask: packages/db | done | P0 | TASK-001A |
 | TASK-001E | Subtask: packages/agent (LangGraph) | done | P0 | TASK-001A |
 | TASK-001F | Subtask: packages/rag (Chroma client) | done | P0 | TASK-001A |
-| TASK-002 | Postgres via docker-compose | todo | P0 | TASK-001 |
+| TASK-002 | Postgres via docker-compose | done | P0 | TASK-001 |
 | TASK-003 | ORM & migrations setup | todo | P0 | TASK-002 |
 | TASK-004 | Environment & secrets handling | todo | P1 | TASK-001 |
 | TASK-005 | CI pipeline skeleton | todo | P1 | TASK-001 |
@@ -88,11 +88,12 @@ until its diff has been reviewed by the
 skill, and any findings are resolved or explicitly accepted.
 
 ## Next up
-Start here: **TASK-002** (Postgres via docker-compose — P0, on the
-critical path to TASK-003 ORM/migrations, which needs the ORM decision).
-TASK-001 is done (all six subtasks), so TASK-004 (env & secrets), TASK-005
-(CI skeleton), and TASK-060 (unit test setup) are also unblocked and can
-run in parallel.
+Start here: **TASK-003** (ORM & migrations — P0, critical path; unblocks
+TASK-006, TASK-010, and TASK-030). ORM decided: **Prisma** (see
+`planning/EPIC.md` open decisions) — TASK-003 is ready to start.
+TASK-002 is done (local Postgres via docker-compose). TASK-004 (env &
+secrets), TASK-005 (CI skeleton), and TASK-060 (unit test setup) are also
+unblocked and can run in parallel.
 
 **2026-09-23 update:** EPIC-3 is now effectively cleared for MVP — Remote
 Rocketship is an approved source (`planning/compliance/remote-rocketship.md`),

@@ -1,0 +1,25 @@
+# Local development database. Values come from .env (see .env.example);
+# the defaults below are dev-only and must never be used in production.
+services:
+  postgres:
+    # Pin the major version: the on-disk data format changes between majors.
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-jobhuntrx}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-jobhuntrx_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-jobhuntrx}
+    ports:
+      # Loopback only — this DB will hold resume/LinkedIn PII; don't expose it on the LAN.
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      # Postgres 18+ images keep PGDATA in a versioned subdirectory of this path.
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:
